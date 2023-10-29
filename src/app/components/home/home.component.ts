@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { tap, catchError, finalize, BehaviorSubject, map } from 'rxjs';
 import { PickJob, PickJobs, StatusEnum } from 'src/app/services/pick-jobs';
@@ -10,7 +10,7 @@ import { PickJobsService } from 'src/app/services/pick-jobs.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   public isLoading = false;
 
   public statusTypeArray: StatusEnum[] = [
@@ -32,6 +32,9 @@ export class HomeComponent implements OnInit {
     'status',
   ];
 
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort();
+
   constructor(private pickJobsService: PickJobsService) {}
 
   public ngOnInit(): void {
@@ -51,6 +54,10 @@ export class HomeComponent implements OnInit {
       .subscribe();
 
     this.pickJobs$.subscribe(data => (this.pickJobsDataSource.data = data));
+  }
+
+  ngAfterViewInit() {
+    this.pickJobsDataSource.sort = this.sort;
   }
 
   public changeStatus(item: PickJob): void {

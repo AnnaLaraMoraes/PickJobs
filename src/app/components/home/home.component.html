@@ -1,105 +1,110 @@
-<div class="container">
-  <div *ngIf="isLoading" class="loader">
-    <mat-spinner></mat-spinner>
+<div *ngIf="isLoading" class="loader">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="header">
+  <h1>Pick Jobs</h1>
+</div>
+
+<div class="jobs-container">
+  <div class="jobs-table">
+    <table
+      mat-table
+      matSort
+      [dataSource]="pickJobsDataSource"
+      class="mat-elevation-z8"
+    >
+      <ng-container matColumnDef="created">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>created</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.created | date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastModified">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>lastModified</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.lastModified | date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="version">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>version</th>
+        <td mat-cell *matCellDef="let element">{{ element.version }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="facilityRef">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>facilityRef</th>
+        <td mat-cell *matCellDef="let element">{{ element.facilityRef }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="orderRef">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>orderRef</th>
+        <td mat-cell *matCellDef="let element">{{ element.orderRef }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="targetTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>targetTime</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.targetTime | date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>status</th>
+        <td mat-cell *matCellDef="let element">
+          <strong [class]="'status_' + element.status">
+            {{ element.status }}</strong
+          >
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        (click)="changeStatus(row)"
+        *matRowDef="let row; columns: displayedColumns"
+        class="mat-row"
+      ></tr>
+    </table>
   </div>
-  <div class="jobs-container">
-    <h1>Pick Jobs</h1>
-    <div class="jobs-table">
-      <table
-        mat-table
-        [dataSource]="pickJobsDataSource"
-        class="mat-elevation-z8"
+
+  <div class="jobs-list">
+    <ul>
+      <li
+        (click)="changeStatus(item)"
+        class="list-item"
+        *ngFor="let item of pickJobs$ | async"
       >
-        <ng-container matColumnDef="created">
-          <th mat-header-cell *matHeaderCellDef>created</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.created | date }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="lastModified">
-          <th mat-header-cell *matHeaderCellDef>lastModified</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.lastModified | date }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="version">
-          <th mat-header-cell *matHeaderCellDef>version</th>
-          <td mat-cell *matCellDef="let element">{{ element.version }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="facilityRef">
-          <th mat-header-cell *matHeaderCellDef>facilityRef</th>
-          <td mat-cell *matCellDef="let element">{{ element.facilityRef }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="orderRef">
-          <th mat-header-cell *matHeaderCellDef>orderRef</th>
-          <td mat-cell *matCellDef="let element">{{ element.orderRef }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="targetTime">
-          <th mat-header-cell *matHeaderCellDef>targetTime</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.targetTime | date }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>status</th>
-          <td mat-cell *matCellDef="let element">
-            <strong [class]="'status_' + element.status">
-              {{ element.status }}</strong
-            >
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          (click)="changeStatus(row)"
-          *matRowDef="let row; columns: displayedColumns"
-        ></tr>
-      </table>
-    </div>
-    <div class="jobs-list">
-      <ul>
-        <li
-          (click)="changeStatus(item)"
-          class="list-item"
-          *ngFor="let item of pickJobs$ | async"
-        >
-          <div>
-            created: <strong> {{ item.created | date }} </strong>
-          </div>
-          <div>
-            lastModified: <strong> {{ item.lastModified | date }} </strong>
-          </div>
-          <div>
-            version: <strong> {{ item.version }} </strong>
-          </div>
-          <div>
-            facilityRef: <strong> {{ item.facilityRef }} </strong>
-          </div>
-          <div>
-            id: <strong> {{ item.id }} </strong>
-          </div>
-          <div>
-            orderRef: <strong> {{ item.orderRef }} </strong>
-          </div>
-          <div>
-            targetTime: <strong> {{ item.targetTime | date }} </strong>
-          </div>
-          <div>
-            <strong
-              >status:
-              <label [class]="'status_' + item.status">{{ item.status }}</label>
-            </strong>
-          </div>
-          <mat-divider></mat-divider>
-        </li>
-      </ul>
-    </div>
+        <div>
+          created: <strong> {{ item.created | date }} </strong>
+        </div>
+        <div>
+          lastModified: <strong> {{ item.lastModified | date }} </strong>
+        </div>
+        <div>
+          version: <strong> {{ item.version }} </strong>
+        </div>
+        <div>
+          facilityRef: <strong> {{ item.facilityRef }} </strong>
+        </div>
+        <div>
+          id: <strong> {{ item.id }} </strong>
+        </div>
+        <div>
+          orderRef: <strong> {{ item.orderRef }} </strong>
+        </div>
+        <div>
+          targetTime: <strong> {{ item.targetTime | date }} </strong>
+        </div>
+        <div>
+          <strong
+            >status:
+            <label [class]="'status_' + item.status">{{ item.status }}</label>
+          </strong>
+        </div>
+        <mat-divider></mat-divider>
+      </li>
+    </ul>
   </div>
 </div>

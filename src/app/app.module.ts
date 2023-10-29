@@ -18,6 +18,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent],
@@ -37,6 +39,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatProgressSpinnerModule,
     MatTableModule,
     MatButtonToggleModule,
+    MatButtonToggleModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
