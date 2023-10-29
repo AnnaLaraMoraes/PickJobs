@@ -26,13 +26,12 @@ export class HomeComponent implements OnInit {
       .getPickJobs()
       .pipe(
         tap(data => {
-          console.log('data: ', data);
           this.pickJobs$.next((data as PickJobs).pickjobs);
         }),
         catchError(err => {
           throw 'error in source. Details: ' + err;
         }),
-        finalize(() => (this.isLoading = false)),
+        tap(() => (this.isLoading = false)),
       )
       .subscribe();
   }
@@ -64,7 +63,7 @@ export class HomeComponent implements OnInit {
         catchError(err => {
           throw 'error in source. Details: ' + err;
         }),
-        finalize(() => (this.isLoading = false)),
+        tap(() => (this.isLoading = false)),
       )
       .subscribe();
   }
