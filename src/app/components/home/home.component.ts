@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { tap, catchError, finalize, BehaviorSubject } from 'rxjs';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatTableDataSource } from '@angular/material/table';
+import { tap, catchError, finalize, BehaviorSubject, map } from 'rxjs';
 import { PickJob, PickJobs, StatusEnum } from 'src/app/services/pick-jobs';
 import { PickJobsService } from 'src/app/services/pick-jobs.service';
 
@@ -10,13 +12,25 @@ import { PickJobsService } from 'src/app/services/pick-jobs.service';
 })
 export class HomeComponent implements OnInit {
   public isLoading = false;
+
   public statusTypeArray: StatusEnum[] = [
     StatusEnum.OPEN,
     StatusEnum.IN_PROGRESS,
     StatusEnum.CLOSED,
   ];
 
-  public pickJobs$ = new BehaviorSubject<PickJob[] | []>([]);
+  public pickJobs$ = new BehaviorSubject<PickJob[]>([]);
+  public pickJobsDataSource = new MatTableDataSource<PickJob>([]);
+
+  public displayedColumns: string[] = [
+    'created',
+    'lastModified',
+    'version',
+    'facilityRef',
+    'orderRef',
+    'targetTime',
+    'status',
+  ];
 
   constructor(private pickJobsService: PickJobsService) {}
 
@@ -27,24 +41,22 @@ export class HomeComponent implements OnInit {
       .pipe(
         tap(data => {
           this.pickJobs$.next((data as PickJobs).pickjobs);
+          this.isLoading = false;
         }),
         catchError(err => {
+          this.isLoading = false;
           throw 'error in source. Details: ' + err;
         }),
-        tap(() => (this.isLoading = false)),
       )
       .subscribe();
+
+    this.pickJobs$.subscribe(data => (this.pickJobsDataSource.data = data));
   }
 
-  public statusToShow(currentStatus: StatusEnum): StatusEnum[] {
-    const filteredStatusValues = this.statusTypeArray.filter(
-      status => status !== currentStatus,
-    );
-    return filteredStatusValues as StatusEnum[];
-  }
-
-  public changeStatus(item: PickJob, newStatus: StatusEnum): void {
+  public changeStatus(item: PickJob, event: MatButtonToggleChange): void {
     this.isLoading = true;
+
+    const newStatus = event.value;
     this.pickJobsService
       .updateStatusPickJob(item, newStatus)
       .pipe(
@@ -59,11 +71,12 @@ export class HomeComponent implements OnInit {
             }) || [];
 
           this.pickJobs$.next(formatedPickjobs);
+          this.isLoading = false;
         }),
         catchError(err => {
+          this.isLoading = false;
           throw 'error in source. Details: ' + err;
         }),
-        tap(() => (this.isLoading = false)),
       )
       .subscribe();
   }

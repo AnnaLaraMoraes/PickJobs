@@ -1,9 +1,35 @@
 <div class="container">
   <form [formGroup]="loginForm">
-    <h1>PickJobs</h1>
+    <h1>Pick Jobs</h1>
 
-    <input type="email" formControlName="email" placeholder="pat@example.com" />
-    <input type="password" formControlName="password" />
-    <button (click)="submit()">Login</button>
+    <mat-form-field>
+      <mat-label>Enter your email</mat-label>
+      <input
+        formControlName="email"
+        matInput
+        placeholder="pat@example.com"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Enter your password</mat-label>
+      <input
+        formControlName="password"
+        matInput
+        [type]="hideButton ? 'password' : 'text'"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hideButton = !hideButton"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hideButton"
+      >
+        <mat-icon>{{ hideButton ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button (click)="submit()" mat-button color="primary">Login</button>
   </form>
 </div>

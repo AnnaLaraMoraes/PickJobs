@@ -14,7 +14,7 @@ export class LoginComponent {
     private authService: AuthService,
   ) {}
 
-  hide = true;
+  public hideButton = true;
 
   public loginForm = this.fb.group({
     email: new FormControl('', [Validators.required]),

@@ -12,6 +12,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent],
@@ -21,10 +27,16 @@ import { HomeComponent } from './components/home/home.component';
     MatFormFieldModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatButtonModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     CommonModule,
     HttpClientModule,
+    MatInputModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
