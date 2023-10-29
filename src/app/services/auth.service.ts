@@ -1,23 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  BehaviorSubject,
-  combineLatest,
-  filter,
-  map,
-  Observable,
-  of,
-  Subject,
-  Subscription,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiKey = 'AIzaSyAAPzQ4x5nbEQOFe1iJ8BI1NZNpDhGXvWw'; // TODO: add em .env
+  private apiKey = environment.apiKey;
 
   private userToken$: BehaviorSubject<string | null> = new BehaviorSubject<
     string | null
@@ -72,8 +63,8 @@ export class AuthService {
 
   login(email: string, password: string): void {
     const body = {
-      email: 'janedoe@ocff-greenduck-git.com', // TODO: fix here
-      password: 'KKk9ipStRvUJMGF',
+      email: email,
+      password: password,
       returnSecureToken: true,
     };
 
