@@ -1,0 +1,45 @@
+<div class="container">
+  <div *ngIf="isLoading" class="loader">
+    <span></span>
+  </div>
+
+  <div class="jobs-list">
+    <h1>Pick Jobs</h1>
+    <ul>
+      <li class="list-item" *ngFor="let item of pickJobs$ | async">
+        <div>
+          created: <strong> {{ item.created | date }} </strong>
+        </div>
+        <div>
+          lastModified: <strong> {{ item.lastModified | date }} </strong>
+        </div>
+        <div>
+          version: <strong> {{ item.version }} </strong>
+        </div>
+        <div>
+          facilityRef: <strong> {{ item.facilityRef }} </strong>
+        </div>
+        <div>
+          id: <strong> {{ item.id }} </strong>
+        </div>
+        <div>
+          orderRef: <strong> {{ item.orderRef }} </strong>
+        </div>
+        <div>
+          targetTime: <strong> {{ item.targetTime | date }} </strong>
+        </div>
+        <div>
+          status: <strong> {{ item.status }} </strong>
+          <strong *ngFor="let statusItem of statusToShow(item.status)">
+            <button
+              [disabled]="isLoading"
+              (click)="changeStatus(item, statusItem)"
+            >
+              {{ statusItem }}
+            </button>
+          </strong>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

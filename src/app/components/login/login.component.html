@@ -1,0 +1,9 @@
+<div class="container">
+  <form [formGroup]="loginForm">
+    <h1>PickJobs</h1>
+
+    <input type="email" formControlName="email" placeholder="pat@example.com" />
+    <input type="password" formControlName="password" />
+    <button (click)="submit()">Login</button>
+  </form>
+</div>
