@@ -53,24 +53,47 @@ export class HomeComponent implements OnInit {
     this.pickJobs$.subscribe(data => (this.pickJobsDataSource.data = data));
   }
 
-  public changeStatus(item: PickJob, event: MatButtonToggleChange): void {
+  public changeStatus(item: PickJob): void {
     this.isLoading = true;
 
-    const newStatus = event.value;
+    let newStatus: StatusEnum;
+
+    switch (item.status) {
+      case StatusEnum.OPEN:
+        newStatus = StatusEnum.IN_PROGRESS;
+        break;
+
+      case StatusEnum.IN_PROGRESS:
+        newStatus = StatusEnum.CLOSED;
+        break;
+
+      case StatusEnum.IN_PROGRESS || StatusEnum.ABORTED:
+        newStatus = StatusEnum.OPEN;
+        break;
+
+      default:
+        newStatus = StatusEnum.OPEN;
+    }
+
     this.pickJobsService
       .updateStatusPickJob(item, newStatus)
       .pipe(
-        tap(data => {
-          const formatedPickjobs: PickJob[] =
+        map(
+          data =>
             this.pickJobs$.value?.map(item => {
               if (item.id === (data as PickJob).id) {
+                const pickJob = data as PickJob;
+                if (!pickJob.targetTime) {
+                  pickJob.targetTime = item.targetTime;
+                }
                 return data as PickJob;
               } else {
                 return item;
               }
-            }) || [];
-
-          this.pickJobs$.next(formatedPickjobs);
+            }) || [],
+        ),
+        tap(updatedPickJobs => {
+          this.pickJobs$.next(updatedPickJobs);
           this.isLoading = false;
         }),
         catchError(err => {

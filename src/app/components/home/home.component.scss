@@ -32,6 +32,18 @@
     }
 }
 
+.list-item {
+    margin-bottom: 2rem;
+
+    > div {
+        margin-bottom: 0.75rem;
+    }
+}
+
+.list-item:hover {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 1040px) {
     .jobs-list {
       display: flex;
@@ -43,14 +55,6 @@
 
     }
   }
-
-.list-item {
-    margin-bottom: 2rem;
-
-    > div {
-        margin-bottom: 0.75rem;
-    }
-}
 
 .loader {
     position: absolute;
@@ -66,4 +70,22 @@ mat-button-toggle {
     display: flex;
     align-items: center;
     font-size: 12px;
+}
+
+.status {
+    &_OPEN {
+        color: red
+    }
+
+    &_CLOSED {
+        color: GREEN
+    }
+
+    &_ABORTED {
+        color: GRAY;
+    }
+
+    &_IN_PROGRESS {
+        color: orange
+    }
 }
